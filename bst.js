@@ -4,10 +4,12 @@ function Node (data) {
     this.right = null;
 }
 
+
 const Tree = (arr) => {
     let root = buildTree(arr,false,0,arr.length); 
     return {root};
 }
+
 
 const buildTree = (arr,sorted,start,end) => {
     if(!sorted){
@@ -28,6 +30,7 @@ const buildTree = (arr,sorted,start,end) => {
     return root; 
 }
 
+
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node.right !== null) {
         prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
@@ -38,11 +41,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
       }
 }
 
+
 const search = (root,data) => {
     if(root == null || root.data == data){return root}
     if(root.data < data){return search(root.right,data)}
     else{return search(root.left,data)}
 }
+
 
 const insertNode = (root,data) => {
 
@@ -56,6 +61,7 @@ const insertNode = (root,data) => {
     return root;
 
 }
+
 
 const deleteNode = (root,data) => {
     if(root==null){return root}
@@ -74,6 +80,7 @@ const deleteNode = (root,data) => {
     return root; 
 }
 
+
 const minData = (root) => {
     let min = root.data;
         while(root.left != null){
@@ -82,14 +89,6 @@ const minData = (root) => {
         }
     return min;
 }
-
-/* RITORNA UNDEFINED
-const find = (root,data) => {
-    if(root == null){return null}
-    if(data<root.data){find(root.left,data)}
-    else if(data>root.data){find(root.right,data)}
-    else{return root}
-}*/
 
 
 const levelOrder = (root,func) => {
@@ -104,12 +103,14 @@ const levelOrder = (root,func) => {
     }
 }
 
+
 const  inorder = (root,func) => {
     if(root == null) return;
     inorder(root.left,func);
     func(root);
     inorder(root.right,func);
 }
+
 
 const preorder = (root,func) => {
     if(root == null) return; 
@@ -118,12 +119,14 @@ const preorder = (root,func) => {
     preorder(root.right,func);
 }
 
+
 const postorder = (root,func) => {
     if(root == null) return;
     postorder(root.left,func);
     postorder(root.right,func);
     func(root);
 }
+
 
 const heigth = (node) => {
     let leftHeigth = 0;
@@ -157,29 +160,6 @@ const depth = (root,targetNode) => {
 }
 
 
-
-
-/* PROBLEMA: RITORNA UNDEFINED PERCHE' ???????
-
-const depth = (root,node) => {
-    return depth1(root,node,0);
-}
-
-const depth1 = (root,node,depth) => {
-    console.log("depth: " + depth);
-    console.log("root: " + root.data);
-    if(root == node){return depth}
-    if(root.left == node){return (depth+1)}
-    if(root.right == node){return (depth+1)}
-    if(root.left != null) {
-        depth1(root.left,node,depth+1);
-    }
-    if(root.right != null) {
-        depth1(root.right,node,depth+1);
-    }
-} 
-*/
-
 function isBalancedHeigth(node) {
     let leftHeigth = 0;
     let rightHeigth = 0;
@@ -189,68 +169,26 @@ function isBalancedHeigth(node) {
         let nodeHeigths = isBalancedHeigth(node.left);
         leftHeigth = Math.max(nodeHeigths.leftHeigth, nodeHeigths.rightHeigth) + 1;
         if(!nodeHeigths.isTreeBalanced){isTreeBalanced=false}
-        /*console.log("node.left: " + node.left.data);
-        console.log("nodeHeigths: " , nodeHeigths);
-        console.log("leftHeigth: " + leftHeigth); */
     }
 
     if (node.right != null) {
         let nodeHeigths = isBalancedHeigth(node.right);
         rightHeigth = Math.max(nodeHeigths.leftHeigth, nodeHeigths.rightHeigth) + 1;
         if(!nodeHeigths.isTreeBalanced){isTreeBalanced=false}
-        /*console.log("node.right: " + node.right.data);
-        console.log("nodeHeigths: " ,  nodeHeigths);
-        console.log("rightHeigth: " + rightHeigth); */
     }
 
     if (Math.abs(leftHeigth - rightHeigth) > 1) {
         isTreeBalanced = false;
-        //console.log("is Tree balanced: " + isTreeBalanced);
     }
 
     return {leftHeigth, rightHeigth,isTreeBalanced};
 }
 
+
 const isBalanced = (node) => {
     return isBalancedHeigth(node).isTreeBalanced; 
 }
 
-
-/*
-const rebalance = (node) => {
-    let leftHeigth = 0;
-    let rightHeigth = 0;
-    //let isTreeBalanced = true;
-
-    if (node.left != null) {
-        let nodeHeigths = rebalance(node.left);
-        leftHeigth = Math.max(nodeHeigths.leftHeigth, nodeHeigths.rightHeigth) + 1;
-        //if(!nodeHeigths.isTreeBalanced){isTreeBalanced=false}
-        console.log("node.left: " + node.left.data);
-        console.log("nodeHeigths: " , nodeHeigths);
-        console.log("leftHeigth: " + leftHeigth); 
-    }
-
-    if (node.right != null) {
-        let nodeHeigths = rebalance(node.right);
-        rightHeigth = Math.max(nodeHeigths.leftHeigth, nodeHeigths.rightHeigth) + 1;
-        //if(!nodeHeigths.isTreeBalanced){isTreeBalanced=false}
-        console.log("node.right: " + node.right.data);
-        console.log("nodeHeigths: " ,  nodeHeigths);
-        console.log("rightHeigth: " + rightHeigth); 
-    }
-
-    if (Math.abs(leftHeigth - rightHeigth) > 1) {
-        //isTreeBalanced = false;
-        //console.log("is Tree balanced: " + isTreeBalanced);
-        if(leftHeigth>rightHeigth){
-            let nodeToMove = findLeaf(node.left); 
-            insertNode(node.right)
-        }
-    }
-
-    return {leftHeigth, rightHeigth};
-}*/
 
 const rebalance = (root) => {
     let arr = []; 
@@ -265,39 +203,3 @@ const findLeaf = (root) => {
     return root; 
 }
 
-
-let myTree = Tree([9,4,3,4,6,77,8,67,5]);
-//prettyPrint(myTree.root);
-//prettyPrint(Tree([1,2,3,4]).root)
-insertNode(myTree.root, 100);
-//prettyPrint(myTree.root);
-insertNode(myTree.root, 1);
-//prettyPrint(myTree.root);
-insertNode(myTree.root, 10);
-//prettyPrint(myTree.root);
-deleteNode(myTree.root,9);
-prettyPrint(myTree.root);
-//levelOrder(myTree.root,node=>{console.log(node.data)});
-//postorder(myTree.root,node=>{console.log(node.data)});
-
-/*Testing the heigth
-console.log(heigth(myTree.root));
-console.log(heigth(search(myTree.root,10)));
-console.log(heigth(search(myTree.root,4)));
-console.log(heigth(search(myTree.root,67)));
-console.log(heigth(search(myTree.root,77)));
-console.log(heigth(search(myTree.root,1)));
-*/
-
-/* Testing depth
-console.log(depth(myTree.root,search(myTree.root,67)));
-console.log(depth(myTree.root,search(myTree.root,8)));
-console.log(depth(myTree.root,search(myTree.root,100)));
-*/
-
-
-//console.log(isBalancedHeigth(myTree.root))
-console.log(isBalanced(myTree.root));
-let newTree = rebalance(myTree.root);
-prettyPrint(newTree.root);
-console.log(isBalanced(newTree));
